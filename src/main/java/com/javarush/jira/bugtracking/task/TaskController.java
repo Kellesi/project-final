@@ -20,9 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static com.javarush.jira.common.BaseHandler.createdResponse;
 
@@ -155,5 +153,25 @@ public class TaskController {
         public TaskTreeNode(TaskTo taskTo) {
             this(taskTo, new LinkedList<>());
         }
+    }
+
+    @PostMapping(path = "/{id}/tags")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void addTags(@PathVariable("id") Long id, @RequestBody String[] tags) {
+        log.info("add tags {} for task with id={}", Arrays.toString(tags), id);
+        taskService.addTags(id, tags);
+    }
+
+    @GetMapping(path = "/{id}/tags")
+    public Set<String> getTags(@PathVariable("id") Long id) {
+        log.info("get tags for task with id={}", id);
+        return taskService.getTags(id);
+    }
+
+    @DeleteMapping(path = "/{id}/tags")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTags(@PathVariable("id") Long id) {
+        log.info("delete all tags for task with id={}", id);
+        taskService.clearTags(id);
     }
 }
