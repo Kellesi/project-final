@@ -25,3 +25,13 @@ services:
       - postgres-db
     ports:
       - 8080:8080
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    depends_on:
+      - app
